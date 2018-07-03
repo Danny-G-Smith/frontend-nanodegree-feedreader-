@@ -86,7 +86,7 @@ $(function() {
        * clicked and does it hide when clicked again.
        */
 
-      it('menu should toggle values when clicked', function() {
+      it('and should toggle between values when clicked', function() {
          const menuBurger = $('.menu-icon-link');
 
          // Click the menu and verify it changes state
@@ -102,11 +102,11 @@ $(function() {
 
    /* TODO: Write a new test suite named "Initial Entries" */
    describe('Initial Entries', function() {
-      const arrayFeedIndex = 1;
+      const feedIndex = 1;
       const articleTitle = $('.header-title');
 
       beforeEach(function(done) {
-         loadFeed(arrayFeedIndex, function() {
+         loadFeed(feedIndex, function() {
             done();
          });
       });
@@ -117,7 +117,7 @@ $(function() {
        * Remember, loadFeed() is asynchronous so this test will require
        * the use of Jasmine's beforeEach and asynchronous done() function.
        */
-      it('verify at least a single item in feed container', function(done) {
+      it('verify at least a single item in feed container, and item matches feed item', function(done) {
          const articles = $('.feed').find('.entry');
 
          // Does one exist?
@@ -127,18 +127,21 @@ $(function() {
          expect(articles.length).toBeGreaterThan(0);
 
          // and must match the appropriate title
-         expect(articleTitle.text()).toEqual(allFeeds[arrayFeedIndex].name);
+         expect(articleTitle.text()).toEqual(allFeeds[feedIndex].name);
 
+         // must stop async
          done();
       });
    });
    /* TODO: Write a new test suite named "New Feed Selection" */
    describe('New Feed Selection', function() {
       const articleTitle = $('.header-title');
-      const arrayFeedIndex = 2;
+      const originalFeedIndex = 1;
+      const feedIndex = 2;
 
       beforeEach(function(done) {
-         loadFeed(arrayFeedIndex, function() {
+         loadFeed(feedIndex, function() {
+            // must stop async
             done();
          });
       });
@@ -148,7 +151,7 @@ $(function() {
        * Remember, loadFeed() is asynchronous.
        */
 
-      it('verify the second feed is not the same as the first', function(done) {
+      it('exists and is not the same as the first', function(done) {
          const articles = $('.feed').find('.entry');
 
          // Does one exist?
@@ -158,11 +161,12 @@ $(function() {
          expect(articles.length).toBeGreaterThan(0);
 
          // and must match the appropriate title
-         expect(articleTitle.text()).toEqual(allFeeds[arrayFeedIndex].name);
+         expect(articleTitle.text()).toEqual(allFeeds[feedIndex].name);
 
          // TODO: >>>>>> but it must not be identical to the first feed <<<<<<<<
-         expect(articleTitle.text()).not.toEqual(allFeeds[1].name);
+         expect(articleTitle.text()).not.toEqual(allFeeds[originalFeedIndex].name);
 
+         // must stop async
          done();
       });
 
