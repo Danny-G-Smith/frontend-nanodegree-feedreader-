@@ -1,5 +1,7 @@
 'use strict';
 // Require our dependencies
+
+// const dotenv = require('dotenv').config();
 const autoprefixer = require('autoprefixer');
 const babel = require('gulp-babel');
 const concat = require('gulp-concat');
@@ -64,27 +66,19 @@ const html = {
  *
  *
  */
-const syncOpts = {
-   'open': false,                   // Open project in a new tab?
-   'injectChanges': false,        // Auto inject changes instead of full reload.
-   'proxy': 'FendStarterKit.test', // Use http://_s.dev:3000 to use BrowserSync.
-   'watchOptions': {
-      'debounceDelay': 1000         // Wait 1 second before injecting.
-   },
-};
-
-/**
- *
- *
- */
 const pleeeaseOpts = {
-   'in': 'app/scss/style.scss',
-   'out': 'app/css/style.scss',
+   'in': 'app/scss/style.css',
+   'out': 'dist/css/style.css',
    'autoprefixer': {'browsers': ['last 2 versions', '> 2%']},
    'rem': ['18px'],
    'pseudoElements': true,
    'mqpacker': true,
    'minifier': !devBuild,
+};
+
+const jasmine = {
+   'in': 'app/scss/',
+   'out': 'app/css/'
 };
 
 

@@ -1,7 +1,25 @@
 module.exports = {
-   "extends": "google",
-   "parserOptions": {"ecmaVersion": 6},
-   "rules": {
-      "indent": ["error", 3],
-   }
+    "env": {
+        "browser": true,
+        "es6": true
+    },
+    "extends": "eslint:recommended",
+    "rules": {
+        "indent": [
+            "error",
+            3
+        ],
+        "linebreak-style": [
+            "error",
+            "unix"
+        ],
+        "quotes": [
+            "error",
+            "single"
+        ],
+        "semi": [
+            "error",
+            "always"
+        ]
+    }
 };

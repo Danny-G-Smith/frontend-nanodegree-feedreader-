@@ -1,0 +1,5 @@
+Rewritecond %{REQUEST_FILENAME} !-f
+RewriteRule (.*) /frontend-nanodegree-feedreader.test/dist/$1 [L,NC]
+
+RewriteCond %{REQUEST_URI}  ^/$
+RewriteRule !^frontend-nanodegree-feedreader.test/dist/(.*) /frontend-nanodegree-feedreader.test/dist/$1 [L,NC]
