@@ -20,7 +20,6 @@ You will learn how to use Jasmine to write a number of tests against a pre-exist
 * Writing effective tests requires analyzing multiple aspects of an application including the HTML, CSS and JavaScript - an extremely important skill when changing teams or joining a new company.
 * Good tests give you the ability to quickly analyze whether new code breaks an existing feature within your codebase, without having to manually test all of the functionality.
 
-
 # How will I complete this project?
 
 Review the Feed Reader Testing [Project Rubric](https://review.udacity.com/#!/projects/3442558598/rubric)
@@ -46,3 +45,26 @@ Review the Feed Reader Testing [Project Rubric](https://review.udacity.com/#!/pr
 19. Implement error handling for undefined variables and out-of-bound array access.
 20. When complete - all of your tests should pass. 
 21. Write a README file detailing all steps required to successfully run the application. If you have added additional tests (for Udacious Test Coverage),  provide documentation for what these future features are and what the tests are checking for.
+
+# How do I install this project?
+1. Cd to wherever you keep your websites.
+2. Enter ```git clone https://github.com/Danny-G-Smith/frontend-nanodegree-feedreader- .```
+3. Now we need to build the system: ```npm install```
+
+# Did you do anything beyond the assignment?
+1. We learned how to lint so I thought it would be a shame not to set it up as well
+2. I also installed gulp, the new version which is considerable more difficult.
+3. I have the following tasks that you can use:
+   * `gulp watch`
+   * `gulp html`
+   * `gulp styles`
+   * `gulp scripts`
+   * `gulp sass:lint`
+   * `gulp js:lint`
+   * `gulp sassdoc`
+4. Update Jasmine to 3.1.0
+   
+# Credits 
+   I got inspiration for my gulp files here [WebDevStudios](https://github.com/WebDevStudios/wd_s/blob/master/Gulpfile.js)
+   [How do I install gulp 4](https://stackoverflow.com/questions/33429727/how-do-i-install-gulp-4)
+   [Jasmine Cheatsheet](https://devhints.io/jasmine)

@@ -1,26 +1,3 @@
-/* app.js
- *
- * This is our RSS feed reader application. It uses the Google
- * Feed Reader API to grab RSS feeds as JSON object we can make
- * use of. It also uses the Handlebars templating library and
- * jQuery.
- */
-//import dotenv from 'dotenv';
-//const dotenv = require('dotenv').config();
-
-//dotenv.config({ silent: true });
-// import * as dotenv from '/node_modules/dotenv/';
-
-
-
-//const result = dotEnv.config();
-
-// if ( result.error ) {
-//    throw result.error;
-// }
-
-//console.log( result );
-
 // The names and URLs to all of the feeds we'd like available.
 var allFeeds = [
    {
@@ -56,7 +33,7 @@ function init() {
  * which will be called after everything has run successfully.
  */
 function loadFeed( id, cb ) {
-   var feedUrl = allFeeds[ id ].url,
+   let feedUrl = allFeeds[ id ].url,
       feedName = allFeeds[ id ].name;
 
    $.ajax( {
@@ -66,7 +43,7 @@ function loadFeed( id, cb ) {
               contentType: 'application/json',
               success: function( result, status ) {
 
-                 var container = $( '.feed' ),
+                 let container = $( '.feed' ),
                     title = $( '.header-title' ),
                     entries = result.feed.entries,
                     entriesLen = entries.length,
@@ -108,7 +85,7 @@ google.setOnLoadCallback( init );
  * until the DOM is ready.
  */
 $( function() {
-   var container = $( '.feed' ),
+   let container = $( '.feed' ),
       feedList = $( '.feed-list' ),
       feedItemTemplate = Handlebars.compile( $( '.tpl-feed-list-item' ).html() ),
       feedId = 0,
@@ -132,7 +109,7 @@ $( function() {
     * (following the link) from occurring.
     */
    feedList.on( 'click', 'a', function() {
-      var item = $( this );
+      let item = $( this );
 
       $( 'body' ).addClass( 'menu-hidden' );
       loadFeed( item.data( 'id' ) );

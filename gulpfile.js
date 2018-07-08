@@ -1,57 +1,57 @@
 'use strict';
 // Require our dependencies
 
-const autoprefixer = require( 'autoprefixer' );
+//const autoprefixer = require( 'autoprefixer' );
 const babel = require( 'gulp-babel' );
+const browserSync = require( 'browser-sync' ).create();
 const concat = require( 'gulp-concat' );
 const del = require( 'del' );
-const {src, task} = require('gulp');
+const destFolder = 'dist/';
 const eslint = require( 'gulp-eslint' );
 const gulp = require( 'gulp' );
 const gutil = require( 'gulp-util' );
 const notify = require( 'gulp-notify' );
+const pkg = require( './package.json' );
 const pleeease = require( 'gulp-pleeease' );
 const plumber = require( 'gulp-plumber' );
 const preprocess = require( 'gulp-preprocess' );
+const reload = browserSync.reload;
 const rename = require( 'gulp-rename' );
 const sass = require( 'gulp-sass' );
+const sassdoc = require( 'sassdoc' );
 const sassLint = require( 'gulp-sass-lint' );
-const stripDebug = require( 'gulp-strip-debug' );
 const sourcemaps = require( 'gulp-sourcemaps' );
+const stripDebug = require( 'gulp-strip-debug' );
 const uglify = require( 'gulp-uglify' );
-const browserSync = require( 'browser-sync' ).create();
-const reload = browserSync.reload;
-const destFolder = 'dist/';
-const pkg = require( './package.json' );
+const { src, task } = require( 'gulp' );
 const devBuild = ( ( process.env.NODE_ENV || 'development' )
    .trim().toLocaleLowerCase() !== 'production' );
 
 
-// Set assets paths.
 /**
- *
- *
+ * @description development path object
  */
 const paths = {
    'css': [ 'app/css/**/*.css' ],
-   'js': [ 'app/js/**/*.js' ],
+   'js': [ 'gulpfile.js', 'app/js/**/*.js' ],
    'scss': [ 'app/scss/**/*.scss' ],
    'tests': [ 'tests/spec/**/*.js' ],
 };
 
+const path = {
+   'css': [ 'app/css/' ]
+};
+
 /**
- *
- *
+ * @description distrobution directory, where the production code goes
  */
 const dist = {
    'css': [ './dist/css/' ],
    'js': [ './dist/js/' ],
 };
 
-
 /**
- *
- *
+ * @description html config object
  */
 const html = {
    in: [ 'app/**/*.html' ],
@@ -64,8 +64,7 @@ const html = {
 };
 
 /**
- *
- *
+ * @description config object
  */
 const pleeeaseOpts = {
    'in': 'app/scss/style.css',
@@ -77,11 +76,13 @@ const pleeeaseOpts = {
    'minifier': !devBuild,
 };
 
+/**
+ * @description jasmine config object
+ */
 const jasmine = {
    'in': 'app/scss/',
    'out': 'app/css/'
 };
-
 
 /**
  * Handle errors and alert the user.
@@ -101,9 +102,8 @@ function handleErrors() {
    this.emit( 'end' );
 }
 
-// build HTML files
 /**
- *
+ * @description process and copy html files to dist
  */
 gulp.task( 'html', function() {
    return gulp.src( html.in )
@@ -115,7 +115,7 @@ gulp.task( 'html', function() {
 
 
 /**
- *
+ * @description sass compiler and copies files
  */
 // compile Sass
 gulp.task( 'styles', function( done ) {
@@ -125,23 +125,24 @@ gulp.task( 'styles', function( done ) {
        .pipe( plumber(
           { 'errorHandler': handleErrors }
        ) )
-       .pipe( pleeease() )
        .pipe( rename( {
                          extname: '.css',
                       } ) )
+       .pipe( gulp.dest( path.css ) )
        .pipe( gulp.dest( dist.css ) )
+       .pipe( pleeease() )
        .pipe( rename( {
                          suffix: '.min',
                          extname: '.css',
                       } ) )
+       .pipe( gulp.dest( path.css ) )
        .pipe( gulp.dest( dist.css ) )
        .pipe( browserSync.reload( { stream: true } ) );
    done();
 } );
 
-
 /**
- *
+ * @description create sass maps to make it easier to debug
  */
 gulp.task( 'maps', function( done ) {
    gulp.src( paths.scss, { base: '.' } )
@@ -152,6 +153,33 @@ gulp.task( 'maps', function( done ) {
        .pipe( sourcemaps.write() )
        .pipe( gulp.dest( './dist' ) );
    done();
+} );
+
+/**
+ * Sass linting.
+ *
+ * https://www.npmjs.com/package/sass-lint
+ */
+gulp.task( 'sass:lint', () =>
+   gulp.src( paths.scss )
+       .pipe( sassLint() )
+       .pipe( sassLint.format() )
+       .pipe( sassLint.failOnError() )
+);
+
+/**
+ * Sass docs.
+ *
+ * http://sassdoc.com/getting-started/
+ */
+gulp.task( 'sassdoc', function() {
+   let options = {
+      dest: 'docs',
+      verbose: true
+   };
+
+   return gulp.src( paths.scss )
+              .pipe( sassdoc( options ) );
 } );
 
 /**
@@ -182,7 +210,7 @@ gulp.task( 'concat', () =>
  * Minify compiled JavaScript.
  *
  * https://www.npmjs.com/package/gulp-uglify
- */ // gulp.series('concat'),
+ */
 gulp.task( 'scripts', function( done ) {
    if ( devBuild ) {
       gulp.src( paths.js )
@@ -211,28 +239,16 @@ gulp.task( 'scripts', function( done ) {
 } );
 
 /**
- * Sass linting.
- *
- * https://www.npmjs.com/package/sass-lint
- */
-gulp.task( 'sass:lint', () =>
-   gulp.src( paths.scss )
-       .pipe( sassLint() )
-       .pipe( sassLint.format() )
-       .pipe( sassLint.failOnError() )
-);
-
-/**
  * JavaScript linting.
  *
  * https://www.npmjs.com/package/gulp-eslint
  */
 gulp.task( 'js:lint', () => {
    gulp.src( paths.js )
-      .pipe( eslint() )
-      .pipe( eslint.format() )
-      .pipe( eslint.failAfterError() )
-});
+       .pipe( eslint() )
+       .pipe( eslint.format() )
+       .pipe( eslint.failAfterError() );
+} );
 
 gulp.task( 'browser-sync', function() {
    browserSync.init( {
@@ -267,6 +283,7 @@ gulp.task( 'watch', function() {
    gulp.watch( paths.css, gulp.series( 'styles' ) );
    gulp.watch( paths.js, gulp.series( 'scripts', browserSync.reload ) );
    gulp.watch( paths.js, gulp.series( 'js:lint' ) );
+   gulp.watch( paths.scss, gulp.series( 'sass:lint' ) );
 } );
 
 /**
@@ -277,5 +294,6 @@ gulp.task( 'html', gulp.series( 'html' ) );
 gulp.task( 'scripts', gulp.series( 'scripts' ) );
 gulp.task( 'styles', gulp.series( 'styles' ) );
 gulp.task( 'maps', gulp.series( 'maps' ) );
-gulp.task( 'lint', gulp.series( 'js:lint' ) );
-//gulp.task('default', gulp.series('html', 'styles', 'scripts'));
+gulp.task( 'jsLint', gulp.series( 'js:lint' ) );
+gulp.task( 'sassLint', gulp.series( 'sass:lint' ) );
+gulp.task( 'sassdoc', gulp.series( 'sassdoc' ) );

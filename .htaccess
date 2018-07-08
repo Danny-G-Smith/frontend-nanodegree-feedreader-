@@ -1,5 +1,3 @@
-Rewritecond %{REQUEST_FILENAME} !-f
-RewriteRule (.*) /frontend-nanodegree-feedreader.test/dist/$1 [L,NC]
-
-RewriteCond %{REQUEST_URI}  ^/$
-RewriteRule !^frontend-nanodegree-feedreader.test/dist/(.*) /frontend-nanodegree-feedreader.test/dist/$1 [L,NC]
+if ($request_filename ~ /dist/*){
+        rewrite ^ http://frontend-nanodegree-feedreader.test? permanent;
+}
