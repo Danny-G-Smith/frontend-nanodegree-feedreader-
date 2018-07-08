@@ -65,6 +65,6 @@ Review the Feed Reader Testing [Project Rubric](https://review.udacity.com/#!/pr
 4. Update Jasmine to 3.1.0
    
 # Credits 
-   I got inspiration for my gulp files here [WebDevStudios](https://github.com/WebDevStudios/wd_s/blob/master/Gulpfile.js)
-   [How do I install gulp 4](https://stackoverflow.com/questions/33429727/how-do-i-install-gulp-4)
-   [Jasmine Cheatsheet](https://devhints.io/jasmine)
+   I got inspiration for my gulp files here [WebDevStudios](https://github.com/WebDevStudios/wd_s/blob/master/Gulpfile.js)<br>
+   [How do I install gulp 4](https://stackoverflow.com/questions/33429727/how-do-i-install-gulp-4)<br>
+   [Jasmine Cheatsheet](https://devhints.io/jasmine)<br>
